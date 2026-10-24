@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "_macros.html" import post_button %}
+{% block body %}
+	{% for id, title, description, release_year, language_id, original_language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features, last_update in film %}
+		{% set names = {} %}{% for lid, lname, _ in languages %}{% if names.update({lid: lname}) %}{% endif %}{% endfor %}
+		<div class="card mb-3">
+			<div class="card-body">
+				<h2 class="h4">{{ title }} <span class="badge text-bg-secondary align-middle">{{ rating }}</span></h2>
+				<p class="text-secondary">{{ description }}</p>
+				<dl class="row mb-0">
+					<dt class="col-sm-4">Release year</dt><dd class="col-sm-8">{{ release_year or '&mdash;'|safe }}</dd>
+					<dt class="col-sm-4">Language</dt><dd class="col-sm-8">{{ names.get(language_id, language_id) }}</dd>
+					<dt class="col-sm-4">Original language</dt><dd class="col-sm-8">{{ names.get(original_language_id, original_language_id) if original_language_id else '&mdash;'|safe }}</dd>
+					<dt class="col-sm-4">Length</dt><dd class="col-sm-8">{% if length %}{{ length }} minutes{% else %}&mdash;{% endif %}</dd>
+					<dt class="col-sm-4">Rental duration</dt><dd class="col-sm-8">{{ rental_duration }} days</dd>
+					<dt class="col-sm-4">Rental rate</dt><dd class="col-sm-8">${{ '%.2f' % rental_rate }}</dd>
+					<dt class="col-sm-4">Replacement cost</dt><dd class="col-sm-8">${{ '%.2f' % replacement_cost }}</dd>
+					<dt class="col-sm-4">Special features</dt><dd class="col-sm-8">{% if special_features %}{{ special_features.replace(',', ', ') }}{% else %}&mdash;{% endif %}</dd>
+					<dt class="col-sm-4">Last update</dt><dd class="col-sm-8 mb-0">{{ last_update }} UTC</dd>
+				</dl>
+			</div>
+		</div>
+		<div class="d-flex gap-2">
+			{{ post_button(update_film_link, id, 'Edit', 'warning') }}
+			<a class="btn btn-outline-secondary" href="{{ index_film_link }}">Back</a>
+		</div>
+	{% endfor %}
+{% endblock %}

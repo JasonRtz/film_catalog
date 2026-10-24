@@ -1,0 +1,28 @@
+{# Shared pieces for the CRUD pages #}
+
+{% macro post_button(link, id, label, style='outline-secondary') %}
+	<form action="{{ link }}" method="POST" class="d-inline">
+		<input type="hidden" name="id" value="{{ id }}">
+		<button type="submit" class="btn btn-sm btn-{{ style }}">{{ label }}</button>
+	</form>
+{% endmacro %}
+
+{# Show / Edit / Delete buttons for one table row. 'what' is used in the confirmation message. #}
+{% macro row_actions(show_link, edit_link, delete_link, id, what) %}
+	<div class="d-flex gap-1 justify-content-end">
+		{{ post_button(show_link, id, 'Show', 'outline-info') }}
+		{{ post_button(edit_link, id, 'Edit', 'outline-warning') }}
+		<form action="{{ delete_link }}" method="POST" class="d-inline" data-confirm="Delete &quot;{{ what }}&quot;? This also removes its links to other records.">
+			<input type="hidden" name="id" value="{{ id }}">
+			<button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+		</form>
+	</div>
+{% endmacro %}
+
+{# A labelled text/number input. Empty (None) values show as empty, never as "None". #}
+{% macro field(name, label, value='', type='text', required=False) %}
+	<div class="mb-3">
+		<label class="form-label" for="{{ name }}">{{ label }}</label>
+		<input class="form-control" id="{{ name }}" name="{{ name }}" type="{{ type }}" value="{{ '' if value is none else value }}" {% if required %}required{% endif %}{% for k, v in kwargs.items() %} {{ k }}="{{ v }}"{% endfor %}>
+	</div>
+{% endmacro %}

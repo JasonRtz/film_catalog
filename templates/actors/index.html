@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "_macros.html" import row_actions %}
+{% block body %}
+	<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+		<input type="search" class="form-control w-auto" placeholder="Filter actors..." data-filter-table="#table">
+		<a class="btn btn-primary" href="{{ create_actor_link }}">+ New actor</a>
+	</div>
+	<div class="card">
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0" id="table">
+				<thead>
+					<tr><th>First name</th><th>Last name</th><th>Last update</th><th></th></tr>
+				</thead>
+				<tbody>
+					{% for id, first, last, last_update in actors %}
+						<tr>
+							<td>{{ first }}</td>
+							<td>{{ last }}</td>
+							<td class="text-secondary">{{ last_update }} UTC</td>
+							<td>{{ row_actions(show_actor_link, update_actor_link, delete_actor_link, id, first ~ ' ' ~ last) }}</td>
+						</tr>
+					{% else %}
+						<tr><td colspan="4" class="text-center text-secondary py-4">No actors yet.</td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

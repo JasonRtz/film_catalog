@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "_macros.html" import row_actions %}
+{% block body %}
+	<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+		<input type="search" class="form-control w-auto" placeholder="Filter languages..." data-filter-table="#table">
+		<a class="btn btn-primary" href="{{ create_language_link }}">+ New language</a>
+	</div>
+	<div class="card">
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0" id="table">
+				<thead>
+					<tr><th>Name</th><th>Last update</th><th></th></tr>
+				</thead>
+				<tbody>
+					{% for id, name, last_update in languages %}
+						<tr>
+							<td>{{ name }}</td>
+							<td class="text-secondary">{{ last_update }} UTC</td>
+							<td>{{ row_actions(show_language_link, update_language_link, delete_language_link, id, name) }}</td>
+						</tr>
+					{% else %}
+						<tr><td colspan="3" class="text-center text-secondary py-4">No languages yet.</td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

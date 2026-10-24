@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field %}
+{% block body %}
+	{% for id, name, last_update in language %}
+		<div class="card" style="max-width: 32rem;">
+			<div class="card-body">
+				<form action="{{ update_language_save_link }}" method="post">
+					<input type="hidden" name="id" value="{{ id }}">
+					{{ field('name', 'Name', name, required=True, autofocus=True) }}
+					<button type="submit" class="btn btn-warning">Update language</button>
+					<a class="btn btn-outline-secondary" href="{{ index_language_link }}">Cancel</a>
+				</form>
+			</div>
+		</div>
+	{% endfor %}
+{% endblock %}

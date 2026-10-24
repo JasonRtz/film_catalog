@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block body %}
+	{% for id, result, last_update in results %}
+		<p>
+			<strong>Result:</strong>
+			{{ result }}
+		</p>
+		<p>
+			<strong>Last update:</strong>
+			{{ last_update }} UTC
+		</p>
+        <form action="{{ index_link }}" method="POST"><button type="submit">Back</button></form>
+	{% endfor %}		
+{% endblock %}

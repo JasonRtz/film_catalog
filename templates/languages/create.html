@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field %}
+{% block body %}
+	<div class="card" style="max-width: 32rem;">
+		<div class="card-body">
+			<form action="{{ save_language_link }}" method="post">
+				{{ field('name', 'Name', required=True, autofocus=True) }}
+				<button type="submit" class="btn btn-primary">Create language</button>
+				<a class="btn btn-outline-secondary" href="{{ index_language_link }}">Cancel</a>
+			</form>
+		</div>
+	</div>
+{% endblock %}

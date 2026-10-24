@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field %}
+{% block body %}
+	{% set title = none %}{% set description = none %}{% set language_id = none %}{% set original_language_id = none %}
+	{% set release_year = none %}{% set length = none %}{% set rating = none %}{% set rental_duration = none %}
+	{% set rental_rate = none %}{% set replacement_cost = none %}{% set special_features = none %}
+	<div class="card" style="max-width: 48rem;">
+		<div class="card-body">
+			<form action="{{ save_film_link }}" method="post">
+				{{ field('title', 'Title', title, required=True, autofocus=True) }}
+				<div class="mb-3">
+					<label class="form-label" for="description">Description</label>
+					<textarea class="form-control" id="description" name="description" rows="3">{{ description or '' }}</textarea>
+				</div>
+				<div class="row">
+					<div class="col-md-6 mb-3">
+						<label class="form-label" for="language_id">Language</label>
+						<select class="form-select" id="language_id" name="language_id" required>
+							<option value="">Select a language...</option>
+							{% for lid, lname, _ in languages %}<option value="{{ lid }}" {{ 'selected' if lid == language_id }}>{{ lname }}</option>{% endfor %}
+						</select>
+					</div>
+					<div class="col-md-6 mb-3">
+						<label class="form-label" for="original_language_id">Original language</label>
+						<select class="form-select" id="original_language_id" name="original_language_id">
+							<option value="">None</option>
+							{% for lid, lname, _ in languages %}<option value="{{ lid }}" {{ 'selected' if lid == original_language_id }}>{{ lname }}</option>{% endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">{{ field('release_year', 'Release year', release_year, type='number', min='1888', max='2100') }}</div>
+					<div class="col-md-4">{{ field('length', 'Length (minutes)', length, type='number', min='1') }}</div>
+					<div class="col-md-4 mb-3">
+						<label class="form-label" for="rating">Rating</label>
+						<select class="form-select" id="rating" name="rating">
+							{% for r in ['G', 'PG', 'PG-13', 'R', 'NC-17'] %}<option value="{{ r }}" {{ 'selected' if r == (rating or 'G') }}>{{ r }}</option>{% endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">{{ field('rental_duration', 'Rental duration (days)', 3 if rental_duration is none else rental_duration, type='number', min='1') }}</div>
+					<div class="col-md-4">{{ field('rental_rate', 'Rental rate ($)', '4.99' if rental_rate is none else rental_rate, type='number', min='0', step='0.01') }}</div>
+					<div class="col-md-4">{{ field('replacement_cost', 'Replacement cost ($)', '19.99' if replacement_cost is none else replacement_cost, type='number', min='0', step='0.01') }}</div>
+				</div>
+				<div class="mb-4">
+					<div class="form-label">Special features</div>
+					{% set chosen = (special_features or '').split(',') %}
+					{% for f in ['Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes'] %}
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="checkbox" id="sf{{ loop.index }}" name="special_features" value="{{ f }}" {{ 'checked' if f in chosen }}>
+							<label class="form-check-label" for="sf{{ loop.index }}">{{ f }}</label>
+						</div>
+					{% endfor %}
+				</div>
+				<button type="submit" class="btn btn-primary">Create film</button>
+				<a class="btn btn-outline-secondary" href="{{ index_film_link }}">Cancel</a>
+			</form>
+		</div>
+	</div>
+{% endblock %}

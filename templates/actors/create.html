@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field %}
+{% block body %}
+	<div class="card" style="max-width: 32rem;">
+		<div class="card-body">
+			<form action="{{ save_actor_link }}" method="post">
+				{{ field('first_name', 'First name', required=True, autofocus=True) }}
+				{{ field('last_name', 'Last name') }}
+				<button type="submit" class="btn btn-primary">Create actor</button>
+				<a class="btn btn-outline-secondary" href="{{ index_actor_link }}">Cancel</a>
+			</form>
+		</div>
+	</div>
+{% endblock %}

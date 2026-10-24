@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field %}
+{% block body %}
+	{% for id, first_name, last_name, last_update in actor %}
+		<div class="card" style="max-width: 32rem;">
+			<div class="card-body">
+				<form action="{{ update_actor_save_link }}" method="post">
+					<input type="hidden" name="id" value="{{ id }}">
+					{{ field('first_name', 'First name', first_name, required=True, autofocus=True) }}
+					{{ field('last_name', 'Last name', last_name) }}
+					<button type="submit" class="btn btn-warning">Update actor</button>
+					<a class="btn btn-outline-secondary" href="{{ index_actor_link }}">Cancel</a>
+				</form>
+			</div>
+		</div>
+	{% endfor %}
+{% endblock %}

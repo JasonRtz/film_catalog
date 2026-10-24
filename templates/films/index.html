@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% from "_macros.html" import row_actions %}
+{% block body %}
+	<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+		<form action="{{ url_for('films_index') }}" method="get" class="d-flex gap-2">
+			<input type="search" name="q" value="{{ search }}" class="form-control" placeholder="Search title or description...">
+			<button type="submit" class="btn btn-outline-secondary">Search</button>
+			{% if search %}<a class="btn btn-outline-secondary" href="{{ url_for('films_index') }}">Clear</a>{% endif %}
+		</form>
+		<a class="btn btn-primary" href="{{ create_film_link }}">+ New film</a>
+	</div>
+	<p class="text-secondary small">{{ total }} film{{ '' if total == 1 else 's' }}{% if search %} matching "{{ search }}"{% endif %}</p>
+
+	<div class="card">
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead>
+					<tr><th>Title</th><th>Year</th><th>Language</th><th>Length</th><th>Rating</th><th>Rate</th><th></th></tr>
+				</thead>
+				<tbody>
+					{% for id, title, description, release_year, language_id, original_language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features, last_update in films %}
+						<tr>
+							<td class="desc-cell">
+								<div class="fw-semibold">{{ title }}</div>
+								<div class="small text-secondary text-truncate">{{ description }}</div>
+							</td>
+							<td>{{ release_year or '' }}</td>
+							<td>{{ language_names.get(language_id, language_id) }}</td>
+							<td>{% if length %}{{ length }} min{% endif %}</td>
+							<td><span class="badge text-bg-secondary">{{ rating }}</span></td>
+							<td>${{ '%.2f' % rental_rate }}</td>
+							<td>{{ row_actions(show_film_link, update_film_link, delete_film_link, id, title) }}</td>
+						</tr>
+					{% else %}
+						<tr><td colspan="7" class="text-center text-secondary py-4">No films found.</td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	{% if pages > 1 %}
+		<nav class="mt-3" aria-label="Film pages">
+			<ul class="pagination justify-content-center flex-wrap">
+				<li class="page-item {{ 'disabled' if page == 1 }}"><a class="page-link" href="{{ url_for('films_index', page=page - 1, q=search) }}">Previous</a></li>
+				{% for n in range(1, pages + 1) %}
+					{% if n == 1 or n == pages or (n - page)|abs <= 2 %}
+						<li class="page-item {{ 'active' if n == page }}"><a class="page-link" href="{{ url_for('films_index', page=n, q=search) }}">{{ n }}</a></li>
+					{% elif (n - page)|abs == 3 %}
+						<li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+					{% endif %}
+				{% endfor %}
+				<li class="page-item {{ 'disabled' if page == pages }}"><a class="page-link" href="{{ url_for('films_index', page=page + 1, q=search) }}">Next</a></li>
+			</ul>
+		</nav>
+	{% endif %}
+{% endblock %}

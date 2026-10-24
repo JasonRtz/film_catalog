@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% from "_macros.html" import post_button %}
+{% block body %}
+	{% for id, first, last, last_update in actor %}
+		<div class="card mb-3">
+			<div class="card-body">
+				<dl class="row mb-0">
+					<dt class="col-sm-3">First name</dt><dd class="col-sm-9">{{ first }}</dd>
+					<dt class="col-sm-3">Last name</dt><dd class="col-sm-9">{{ last }}</dd>
+					<dt class="col-sm-3">Last update</dt><dd class="col-sm-9 mb-0">{{ last_update }} UTC</dd>
+				</dl>
+			</div>
+		</div>
+		<div class="d-flex gap-2">
+			{{ post_button(update_actor_link, id, 'Edit', 'warning') }}
+			<a class="btn btn-outline-secondary" href="{{ index_actor_link }}">Back</a>
+		</div>
+	{% endfor %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block body %}
+	<div class="card mb-4">
+		<div class="card-body p-4">
+			<h2 class="h5">Ask the database a question</h2>
+			<p class="text-secondary">Type a question in plain English. A few are built in; anything else is turned into SQL by a local AI model (needs Ollama).</p>
+			<form action="{{ submit_query_link }}" method="post" id="query-form">
+				<div class="input-group input-group-lg">
+					<input type="text" name="query" id="query" class="form-control" placeholder="e.g. List the 5 longest films with their length" autocomplete="off" required>
+					<button type="submit" class="btn btn-primary" id="query-submit">Ask</button>
+				</div>
+			</form>
+			<div class="mt-3">
+				<div class="small text-secondary mb-2">Try one:</div>
+				<div class="d-flex flex-wrap gap-2">
+					{% for q in ["Actors with first name 'TOM'", "Actor with most films", "Count films per category", "What is the average running time of all the films?"] %}
+						<button type="button" class="btn btn-sm btn-outline-secondary example-chip" data-q="{{ q }}">{{ q }}</button>
+					{% endfor %}
+					{% for q in ["How many films are there?", "List the 5 longest films with their length", "Which actors appeared in the film ACADEMY DINOSAUR?"] %}
+						<button type="button" class="btn btn-sm btn-outline-info example-chip" data-q="{{ q }}">{{ q }} <span class="badge text-bg-info ms-1">AI</span></button>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row g-3">
+		{% for title, link, text in [("Films", index_film_link, "Browse, search, add and edit films."), ("Actors", index_actor_link, "Everyone who appears in the catalog."), ("Categories", index_category_link, "Action, Comedy, Drama and more."), ("Languages", index_language_link, "Languages films are available in.")] %}
+			<div class="col-sm-6 col-lg-3">
+				<a href="{{ link }}" class="card h-100 text-decoration-none">
+					<div class="card-body">
+						<h3 class="h6 mb-1">{{ title }}</h3>
+						<p class="small text-secondary mb-0">{{ text }}</p>
+					</div>
+				</a>
+			</div>
+		{% endfor %}
+	</div>
+
+	<script>
+		var form = document.getElementById('query-form');
+		document.querySelectorAll('.example-chip').forEach(function (chip) {
+			chip.addEventListener('click', function () {
+				document.getElementById('query').value = chip.dataset.q;
+				form.requestSubmit();
+			});
+		});
+		// AI answers can take a few seconds, so show that something is happening
+		form.addEventListener('submit', function () {
+			var button = document.getElementById('query-submit');
+			button.disabled = true;
+			button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Thinking...';
+		});
+	</script>
+{% endblock %}

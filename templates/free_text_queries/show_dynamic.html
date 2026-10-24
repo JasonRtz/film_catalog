@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block body %}
+    {% for result in results %}
+        <div>
+            {% for field_name, value in result %}
+                <p>
+                    <strong>{{ field_name }}:</strong> {{ value }}
+                </p>
+            {% endfor %}
+        </div>
+        <form action="{{ index_link }}" method="POST"><button type="submit">Back</button></form>
+    {% endfor %}
+{% endblock %}
