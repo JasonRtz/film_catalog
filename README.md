@@ -2,6 +2,12 @@
 
 A small Flask web app for browsing and editing the **Sakila** sample database (a DVD rental store) stored in SQLite, with a query box that answers questions in plain English using a **local AI model** (Ollama).
 
+## Project Background
+
+This project was originally developed as part of my coursework at IEK AKMI, where I studied software development.
+
+Since then, I have continued improving and expanding the application beyond its original academic scope, focusing on backend functionality, database management, user interface improvements, and optional local AI integration.
+
 ## Features
 
 - **Dark Bootstrap UI** with a navigation bar, searchable and paginated film list, dropdowns and checkboxes in the film form, confirmation before deleting, and success/error messages.
