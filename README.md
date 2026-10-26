@@ -8,6 +8,8 @@ This project was originally developed as part of my coursework at IEK AKMI, wher
 
 Since then, I have continued improving and expanding the application beyond its original academic scope, focusing on backend functionality, database management, user interface improvements, and optional local AI integration.
 
+<img width="1737" height="722" alt="Screenshot 2026-10-26 203023" src="https://github.com/user-attachments/assets/a97a99c9-db3d-495c-8895-bc94e3b92ea7" />
+
 ## Features
 
 - **Dark Bootstrap UI** with a navigation bar, searchable and paginated film list, dropdowns and checkboxes in the film form, confirmation before deleting, and success/error messages.
